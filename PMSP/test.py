@@ -12,11 +12,11 @@ if __name__ == "__main__":
 
     env = PMSP(cfg,
                debug_mode = True,
-               data = "Data/data_01.csv")
+               data = "Data/data_03.csv")
     agent = PPO(cfg, cfg.state_dim, cfg.hidden_dim, cfg.num_job)
 
     # Define the model path
-    model_path = "output/241113_data_01_002(Adam)/model/episode_21200.pt"
+    model_path = "Archive/241113_Data_02_cpu/model/episode_28000.pt"
 
     # Load the saved model
     agent.load_state_dict(torch.load(model_path))
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     done_mask = torch.ones(cfg.num_job)
     action_list = []
     while not done:
-        logit = agent.pi(torch.from_numpy(state).float())
+        logit = agent.pi(state)
         prob = torch.softmax(logit, dim=-1)
         masked_prob = prob.mul(done_mask)
         sum = torch.sum(masked_prob, dim=-1)
